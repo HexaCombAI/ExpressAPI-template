@@ -1,0 +1,37 @@
+# 🐱 Build outputs
+dist/
+build/
+
+# 🐱 Dependencies
+node_modules/
+
+# 🐱 Generated files
+*.d.ts
+*.js
+*.js.map
+
+# 🐱 Environment files
+.env
+.env.local
+.env.*.local
+
+# 🐱 Logs
+*.log
+logs/
+
+# 🐱 Coverage reports
+coverage/
+
+# 🐱 Temporary files
+tmp/
+temp/
+
+# 🐱 IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 🐱 OS files
+.DS_Store
+Thumbs.db
