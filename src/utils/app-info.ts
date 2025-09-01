@@ -9,6 +9,10 @@ export const appInfo = {
   keywords: ['express', 'typescript', 'api', 'template', 'nodejs', 'es2022'],
   engines: {
     node: '>=18.0.0'
+  },
+  endpoints: {
+    health: '/health',
+    api: '/api'
   }
 };
 

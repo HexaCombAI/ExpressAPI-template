@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // 🐱 Import routes
-import rootRouter from './routes/index.js';
+import rootRouter from './routes/index.route.js';
 
 // 🐱 Create Express app
 const app: Express = express();
