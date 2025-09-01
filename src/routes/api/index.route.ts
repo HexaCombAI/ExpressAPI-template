@@ -1,5 +1,6 @@
 // 🐱 API routes
 import { Router } from 'express';
+import type { SuccessResponseBody } from '../../types/responseBody.type.js';
 
 const apiRoutes = Router();
 
@@ -13,18 +14,28 @@ import { getCurrentISODate } from '../../types/date.type.js';
 
 // 🐱 API root endpoint
 apiRoutes.get('/', (_req, res) => {
-  res.status(200).json({
+  const response: SuccessResponseBody<{
+    version: string;
+    endpoints: Record<string, string>;
+    supportedVersions: string[];
+    deprecatedVersions: string[];
+    versioningStrategy: string;
+    documentation: Record<string, string>;
+  }> = {
     status: 'ok',
     statusCode: 200,
     message: apiInfo.name,
-    version: apiInfo.version,
-    endpoints: apiInfo.versionEndpoints,
-    supportedVersions: apiInfo.supportedVersions,
-    deprecatedVersions: apiInfo.deprecatedVersions,
-    versioningStrategy: apiInfo.versioningStrategy,
-    documentation: apiInfo.documentation,
+    payload: {
+      version: apiInfo.version,
+      endpoints: apiInfo.versionEndpoints,
+      supportedVersions: apiInfo.supportedVersions,
+      deprecatedVersions: apiInfo.deprecatedVersions,
+      versioningStrategy: apiInfo.versioningStrategy,
+      documentation: apiInfo.documentation
+    },
     timestamp: getCurrentISODate()
-  });
+  };
+  res.status(200).json(response);
 });
 
 // 🐱 V1 API endpoint

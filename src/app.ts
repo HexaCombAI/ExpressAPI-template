@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import type { ErrorResponseBody } from './types/responseBody.type.js';
+import { getCurrentISODate } from './types/date.type.js';
 
 // 🐱 Load environment variables
 dotenv.config();
@@ -26,19 +28,32 @@ app.use('/', rootRouter);
 
 // 🐱 404 handler
 app.use('*', (_req: Request, res: Response): void => {
-  res.status(404).json({ 
-    error: 'Not Found',
-    message: 'The requested resource was not found'
-  });
+  const response: ErrorResponseBody<{ path: string }> = {
+    status: 'error',
+    statusCode: 404,
+    message: 'The requested resource was not found',
+    payload: {
+      path: _req.originalUrl
+    },
+    timestamp: getCurrentISODate()
+  };
+  res.status(404).json(response);
 });
 
 // 🐱 Global error handler
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction): void => {
   console.error('🐱 Error:', err);
-  res.status(500).json({ 
-    error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message
-  });
+  const response: ErrorResponseBody<{ error: string; stack?: string }> = {
+    status: 'error',
+    statusCode: 500,
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message,
+    payload: {
+      error: err.name,
+      ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+    },
+    timestamp: getCurrentISODate()
+  };
+  res.status(500).json(response);
 });
 
 // 🐱 Start server function
